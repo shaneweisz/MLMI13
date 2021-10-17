@@ -171,7 +171,9 @@ class SVMText(Evaluation):
         1. extract vocabulary (i.e. get features for training)
         2. extract features for each review as well as saving the sentiment
         3. append each feature to self.input_features and each label to self.labels
-        
+        (self.input_features will then be a list of list, where the inner list is
+        the features)
+
         @param reviews: movie reviews
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
