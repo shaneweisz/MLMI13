@@ -13,7 +13,7 @@ This repository will provide the code framework for the MLMI coursework. The cod
 - There are several other files to be completed to assess different NLP techniques on IMDB sentiment classification
  
 #### This repository contains all the data needed for the first section of the handout:
-- The IMDB reviews (1000 positive and 1000 negative) are saved in data/reviews (.zip and .tar.gz versions of the data are provided which can be extracted). 
+- The IMDB reviews (1000 positive and 1000 negative) are saved in data/reviews (.zip and .tar.gz versions of the data are provided which have to first be extracted). 
 - The Lexicon sentiment file is saved in data/sent_lexicon
 
 ## Requirements 
@@ -21,6 +21,7 @@ This Coursework is based in python3 and is compatabile with any operating system
 - scipy
 - scikit
 - gensim
+- nltk
 
 Which are easily available through pip
 
