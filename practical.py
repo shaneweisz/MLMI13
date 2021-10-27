@@ -68,7 +68,7 @@ NB.crossValidate(corpus)
 # using cross-eval for smoothed predictions from now on
 smoothed_preds=NB.predictions
 print(f"Accuracy: {NB.getAccuracy():.3f}")
-print(f"Std. Dev: {NB.getStdDeviation()}")
+print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 
 
 # question 4.0
@@ -93,7 +93,7 @@ print("--- cross-validating naive bayes using smoothing and bigrams ---")
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=False,discard_closed_class=False)
 NB.crossValidate(corpus)
 smoothed_and_bigram_preds=NB.predictions
-print(f"Accuracy: {NB.getAccuracy():.2f}") 
+print(f"Accuracy: {NB.getAccuracy():.2f}")
 print(f"Std. Dev: {NB.getStdDeviation():.2f}")
 
 
