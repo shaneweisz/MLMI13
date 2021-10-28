@@ -97,6 +97,8 @@ def extract_review(file, sentiment):
 
         token, pos_tag = line.split('\t')
 
+        token = token.lower() # Cast token to lower case
+
         tokens.append((token, pos_tag))
 
     review = (sentiment, tokens)

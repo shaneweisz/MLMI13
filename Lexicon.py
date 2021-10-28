@@ -44,10 +44,10 @@ class SentimentLexicon(Evaluation):
             tokens = review[1]
 
             for token, pos_tag in tokens:
-                if token.lower() not in self.lexicon:
+                if token not in self.lexicon:
                     continue # skip punctuation and words not in the lexicon
 
-                token_magnitude, token_polarity = self.lexicon[token.lower()]
+                token_magnitude, token_polarity = self.lexicon[token]
 
                 if token_polarity == 'positive':
                     if magnitude:
