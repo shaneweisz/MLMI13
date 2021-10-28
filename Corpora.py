@@ -108,5 +108,3 @@ def extract_review(file, sentiment):
 
     review = (sentiment, tokens)
     return review
-
-mrc = MovieReviewCorpus(False, False)
