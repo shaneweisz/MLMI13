@@ -57,7 +57,6 @@ class MovieReviewCorpus():
         base_path = 'data/reviews'
 
         for sentiment in ["POS", "NEG"]:
-            print(f"Extracting {sentiment} reviews...")
 
             path = f"{base_path}/{sentiment}"
             all_files = os.listdir(path)
@@ -84,12 +83,6 @@ class MovieReviewCorpus():
                     self.folds[fold_number] = [review]
                 else:
                     self.folds[fold_number].append(review)
-
-
-        print(f"Extracted {len(self.reviews)} reviews in total")
-        print(f"Train set contains {len(self.train)} reviews")
-        print(f"Test set contains {len(self.test)} reviews")
-        print(f"There are {len(self.folds.keys())} CV folds, each containing {len(self.folds[0])} reviews")
 
 def extract_review(file, sentiment):
     tokens = []
