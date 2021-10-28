@@ -38,4 +38,50 @@ class SentimentLexicon(Evaluation):
         """
         # reset predictions
         self.predictions=[]
-        # TODO Q0
+
+        for review in reviews:
+            score = 0
+            tokens = review[1]
+
+            for token, pos_tag in tokens:
+                if token.lower() not in self.lexicon:
+                    continue # skip punctuation and words not in the lexicon
+
+                token_magnitude, token_polarity = self.lexicon[token.lower()]
+
+                if token_polarity == 'positive':
+                    if magnitude:
+                        if token_magnitude == 'strongsubj':
+                            score += 1
+                        elif token_magnitude == 'weaksubj':
+                            score += 0.5
+                        else:
+                            raise Exception(f"Unknown token magnitude {token_magnitude} (expected either 'strongsubj' or 'weaksubj')")
+                    else:
+                        score += 1
+                elif token_polarity == 'negative':
+                    if magnitude:
+                        if token_magnitude == 'strongsubj':
+                            score -= 1
+                        elif token_magnitude == 'weaksubj':
+                            score -= 0.5
+                        else:
+                            raise Exception(f"Unknown token magnitude: {token_magnitude} (expected either 'strongsubj' or 'weaksubj')")
+                    else:
+                        score -= 1
+                elif token_polarity == 'neutral' or token_polarity == 'both':
+                    continue # skip words with neutral or both polarities
+                else:
+                    raise Exception(f"Unknown token polarity: {token_polarity} (expected either 'positive', 'negative', 'both', or 'neutral')")
+
+            if score > threshold:
+                predicted_sentiment = "POS"
+            else:
+                predicted_sentiment = "NEG"
+
+            true_sentiment = review[0]
+
+            if predicted_sentiment == true_sentiment:
+                self.predictions.append('+')
+            else:
+                self.predictions.append('-')
