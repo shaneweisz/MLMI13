@@ -93,8 +93,41 @@ class NaiveBayesText(Evaluation):
         @param reviews: movie reviews
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
-        # TODO Q1
-        # TODO Q2 (use switch for smoothing from self.smoothing)
+
+        # 1. reset self.vocabulary, self.prior and self.condProb
+        self.vocabulary=set()
+        self.prior={}
+        self.condProb={}
+
+        # 2. extract vocabulary (i.e. get features for training)
+        self.extractVocabulary(reviews)
+
+        # 3. get prior and conditional probability for each label ("POS","NEG") and store in self.prior and self.condProb
+        N = len(reviews)
+
+        for c in ["POS", "NEG"]:
+            c_reviews = list(filter(lambda review: review[0] == c, reviews))
+            N_c = len(c_reviews)
+            self.prior[c] = N_c / N
+
+            all_words_for_class_c = []
+            for sentiment, tokens in c_reviews:
+                for word, pos_tag in tokens:
+                    all_words_for_class_c.append(word)
+
+            word_frequencies = {word: 0 for word, pos_tag in self.vocabulary}
+
+            for word in all_words_for_class_c:
+                word_frequencies[word] += 1
+
+            SMOOTHING_FACTOR = 2
+            self.condProb[c] = {}
+            for word, pos_tag in self.vocabulary:
+                if self.smoothing:
+                    self.condProb[c][word] = (word_frequencies[word] + SMOOTHING_FACTOR) / (len(all_words_for_class_c) + SMOOTHING_FACTOR * len(self.vocabulary))
+                else:
+                    self.condProb[c][word] = word_frequencies[word] / len(all_words_for_class_c)
+
 
     def test(self,reviews):
         """
@@ -104,7 +137,21 @@ class NaiveBayesText(Evaluation):
         @param reviews: movie reviews
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
-        # TODO Q1
+        for review in reviews:
+            score = dict()
+            for c in ["POS", "NEG"]:
+                score[c] = np.log(self.prior[c])
+                for word, _ in review[1]:
+                    if word not in self.condProb[c]:
+                        continue
+                    score[c] += np.log(self.condProb[c][word])
+
+            true_sentiment = review[0]
+            predicted_sentiment = max(score, key=score.get)
+            if predicted_sentiment == true_sentiment:
+                self.predictions.append('+')
+            else:
+                self.predictions.append('-')
 
 class SVMText(Evaluation):
     def __init__(self,bigrams,trigrams,discard_closed_class):
