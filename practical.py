@@ -87,8 +87,12 @@ p_value=signTest.getSignificance(smoothed_preds, stemmed_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using stemming are {significance} with respect to smoothed NB with no stemming")
 
-# TODO Q4.2
+# Q4.2
 print("--- determining the number of features before/after stemming ---")
+NB.train(stemmed_corpus.train) # Retrain on full training data before counting number of features
+num_stemmed_features = len(NB.vocabulary)
+print(f"Number of features without smoothing: {num_non_stemmed_features}")
+print(f"Number of features with smoothing: {num_stemmed_features}")
 
 # question Q5.0
 # cross-validate model using smoothing and bigrams
