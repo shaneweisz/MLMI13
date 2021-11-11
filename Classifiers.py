@@ -120,7 +120,7 @@ class NaiveBayesText(Evaluation):
             for word in all_words_for_class_c:
                 word_frequencies[word] += 1
 
-            SMOOTHING_FACTOR = 2
+            SMOOTHING_FACTOR = 1
             self.condProb[c] = {}
             for word, pos_tag in self.vocabulary:
                 if self.smoothing:
