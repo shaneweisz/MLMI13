@@ -68,7 +68,7 @@ class MovieReviewCorpus():
                 # Extract review and add to reviews list
                 path_to_file = f"{path}/{file}"
 
-                review = extract_review(path_to_file, sentiment)
+                review = self.extract_review(path_to_file, sentiment)
                 self.reviews.append(review)
 
                 # Add review to appropriate train/test set
@@ -84,20 +84,24 @@ class MovieReviewCorpus():
                 else:
                     self.folds[fold_number].append(review)
 
-def extract_review(file, sentiment):
-    tokens = []
-    for line in open(file, 'r').readlines():
-        line = line.strip()
+    def extract_review(self, file, sentiment):
+        tokens = []
+        for line in open(file, 'r').readlines():
+            line = line.strip()
 
-        if len(line) == 0:
-            continue  # Skip blank lines
+            if len(line) == 0:
+                continue  # Skip blank lines
 
-        if len(line.split('\t')) != 2:
-            raise Exception("Encountered a line that's not a token and pos tag pair")
+            if len(line.split('\t')) != 2:
+                raise Exception("Encountered a line that's not a token and pos tag pair")
 
-        token, pos_tag = line.split('\t')
+            token, pos_tag = line.split('\t')
 
-        tokens.append((token, pos_tag))
+            if self.stemmer:
+                token = self.stemmer.stem(token)
 
-    review = (sentiment, tokens)
-    return review
+            tokens.append((token, pos_tag))
+
+
+        review = (sentiment, tokens)
+        return review
