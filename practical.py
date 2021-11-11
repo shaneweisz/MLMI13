@@ -81,8 +81,11 @@ stemmed_preds=NB.predictions
 print(f"Accuracy: {NB.getAccuracy():.3f}")
 print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 
-# TODO Q4.1
+# Q4.1
 # see if stemming significantly improves results on smoothed NB
+p_value=signTest.getSignificance(smoothed_preds, stemmed_preds)
+significance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using stemming are {significance} with respect to smoothed NB with no stemming")
 
 # TODO Q4.2
 print("--- determining the number of features before/after stemming ---")
