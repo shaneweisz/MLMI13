@@ -110,7 +110,14 @@ signifance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only")
 
 
-# TODO Q5.1
+# Q5.1
+print("--- determining the number of features with/without bigrams ---")
+NB.train(corpus.train)
+num_bigram_features = len(NB.vocabulary)
+num_unigram_features = num_non_stemmed_features
+print(f"Number of features with just unigrams smoothing: {num_unigram_features}")
+print(f"Number of features with unigrams and bigrams: {num_bigram_features}")
+
 
 # TODO Q6 and 6.1
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
