@@ -1,5 +1,4 @@
 import math,sys
-
 class Evaluation():
     """
     general evaluation class implemented by classifiers
@@ -19,7 +18,19 @@ class Evaluation():
         """
         # reset predictions
         self.predictions=[]
-        # TODO Q3
+
+        num_folds = 10
+        # Loop through the folds to give each a turn to act as the test fold
+        for test_fold in range(0, num_folds):
+            # Split into train and test folds
+            test_files = corpus.folds[test_fold]
+            train_files=[]
+            for train_fold in range(0, num_folds):
+                if train_fold == test_fold: continue
+                train_files += corpus.folds[train_fold]
+            # Train on the 9 train folds, then test on the remaining fold
+            self.train(train_files)
+            self.test(test_files)
 
     def getStdDeviation(self):
         """
