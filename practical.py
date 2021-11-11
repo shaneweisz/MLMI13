@@ -103,12 +103,23 @@ smoothed_and_bigram_preds=NB.predictions
 print(f"Accuracy: {NB.getAccuracy():.2f}")
 print(f"Std. Dev: {NB.getStdDeviation():.2f}")
 
-
 # see if bigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only")
 
+# cross-validate model using smoothing and bigrams and trigrams
+print("--- cross-validating naive bayes using smoothing and bigrams and trigrams  ---")
+NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=True,discard_closed_class=False)
+NB.crossValidate(corpus)
+smoothed_and_bigram_and_trigrams_preds=NB.predictions
+print(f"Accuracy: {NB.getAccuracy():.2f}")
+print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+
+# see if bigrams+trigrams significantly improves results on smoothed NB only
+p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams_preds)
+significance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only")
 
 # Q5.1
 print("--- determining the number of features with/without bigrams ---")
