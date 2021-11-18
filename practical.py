@@ -91,8 +91,8 @@ print(f"results using stemming are {significance} with respect to smoothed NB wi
 print("--- determining the number of features before/after stemming ---")
 NB.train(stemmed_corpus.train) # Retrain on full training data before counting number of features
 num_stemmed_features = len(NB.vocabulary)
-print(f"Number of features without smoothing: {num_non_stemmed_features}")
-print(f"Number of features with smoothing: {num_stemmed_features}")
+print(f"Number of features without stemming: {num_non_stemmed_features}")
+print(f"Number of features with stemming: {num_stemmed_features}")
 
 # question Q5.0
 # cross-validate model using smoothing and bigrams
