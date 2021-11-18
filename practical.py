@@ -102,6 +102,7 @@ NB.crossValidate(corpus)
 smoothed_and_bigram_preds=NB.predictions
 print(f"Accuracy: {NB.getAccuracy():.2f}")
 print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+num_bigram_features = len(NB.vocabulary)
 
 # see if bigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_preds)
@@ -115,6 +116,7 @@ NB.crossValidate(corpus)
 smoothed_and_bigram_and_trigrams_preds=NB.predictions
 print(f"Accuracy: {NB.getAccuracy():.2f}")
 print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+num_trigram_features = len(NB.vocabulary)
 
 # see if bigrams+trigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams_preds)
@@ -124,11 +126,11 @@ print(f"results using smoothing and bigrams and trigrams are {significance} with
 # Q5.1
 print("--- determining the number of features with/without bigrams ---")
 NB.train(corpus.train)
-num_bigram_features = len(NB.vocabulary)
+
 num_unigram_features = num_non_stemmed_features
 print(f"Number of features with just unigrams smoothing: {num_unigram_features}")
 print(f"Number of features with unigrams and bigrams: {num_bigram_features}")
-
+print(f"Number of features with unigrams, bigrams and trigrams: {num_trigram_features}")
 
 # TODO Q6 and 6.1
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
