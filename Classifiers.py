@@ -111,18 +111,18 @@ class NaiveBayesText(Evaluation):
             self.prior[c] = N_c / N
 
             all_words_for_class_c = []
-            for sentiment, tokens in c_reviews:
-                for word, pos_tag in tokens:
+            for sentiment, review in c_reviews:
+                for word in self.extractReviewTokens(review):
                     all_words_for_class_c.append(word)
 
-            word_frequencies = {word: 0 for word, pos_tag in self.vocabulary}
+            word_frequencies = {word: 0 for word in self.vocabulary}
 
             for word in all_words_for_class_c:
                 word_frequencies[word] += 1
 
             SMOOTHING_FACTOR = 1
             self.condProb[c] = {}
-            for word, pos_tag in self.vocabulary:
+            for word in self.vocabulary:
                 if self.smoothing:
                     self.condProb[c][word] = (word_frequencies[word] + SMOOTHING_FACTOR) / (len(all_words_for_class_c) + SMOOTHING_FACTOR * len(self.vocabulary))
                 else:
@@ -137,16 +137,15 @@ class NaiveBayesText(Evaluation):
         @param reviews: movie reviews
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
-        for review in reviews:
+        for true_sentiment, review in reviews:
             score = dict()
             for c in ["POS", "NEG"]:
                 score[c] = np.log(self.prior[c])
-                for word, _ in review[1]:
-                    if word not in self.condProb[c]:
+                for token in self.extractReviewTokens(review):
+                    if token not in self.condProb[c]:
                         continue
-                    score[c] += np.log(self.condProb[c][word])
+                    score[c] += np.log(self.condProb[c][token])
 
-            true_sentiment = review[0]
             predicted_sentiment = max(score, key=score.get)
             if predicted_sentiment == true_sentiment:
                 self.predictions.append('+')
@@ -233,7 +232,7 @@ class SVMText(Evaluation):
     def train(self,reviews):
         """
         train svm. This uses the sklearn SVM module, and further details can be found using
-        the sci-kit docs. You can try changing the SVM parameters. 
+        the sci-kit docs. You can try changing the SVM parameters.
 
         @param reviews: training data
         @type reviews: list of (string, list) tuples corresponding to (label, content)

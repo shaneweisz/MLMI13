@@ -43,7 +43,7 @@ class SentimentLexicon(Evaluation):
             score = 0
             tokens = review[1]
 
-            for token, pos_tag in tokens:
+            for token in tokens:
                 if token.lower() not in self.lexicon:
                     continue # skip punctuation and words not in the lexicon
 

@@ -93,15 +93,17 @@ class MovieReviewCorpus():
                 continue  # Skip blank lines
 
             if len(line.split('\t')) != 2:
-                raise Exception("Encountered a line that's not a token and pos tag pair")
+                raise Exception("Encountered a line that's not a word and pos tag pair")
 
-            token, pos_tag = line.split('\t')
+            word, pos_tag = line.split('\t')
 
             if self.stemmer:
-                token = self.stemmer.stem(token)
+                word = self.stemmer.stem(word)
 
-            tokens.append((token, pos_tag))
-
+            if self.pos:
+                tokens.append((word, pos_tag))
+            else:
+                tokens.append(word)
 
         review = (sentiment, tokens)
         return review
