@@ -77,8 +77,8 @@ class MovieReviewCorpus():
                 else:
                     self.train.append(review)
 
-                # Add review to appropriate CV fold
-                fold_number = int(file[2])
+                # Add review to appropriate CV fold using Round-Robin cross-validation
+                fold_number = int(file[2:5]) % 10 # i.e. cv013 -> 013 -> 3 (fold 3)
                 if fold_number not in self.folds:
                     self.folds[fold_number] = [review]
                 else:
