@@ -153,7 +153,7 @@ class NaiveBayesText(Evaluation):
                 self.predictions.append('-')
 
 class SVMText(Evaluation):
-    def __init__(self,bigrams,trigrams,discard_closed_class):
+    def __init__(self,bigrams,trigrams,discard_closed_class, hyp={"kernel": "linear"}):
         """
         initialisation of SVMText object
 
@@ -171,8 +171,11 @@ class SVMText(Evaluation):
 
         @param discard_closed_class: restrict unigrams to nouns, adjectives, adverbs and verbs?
         @type discard_closed_class: boolean
+
+        @param hyp: hyperparameters for SVC
+        @type hyp: dict[str]
         """
-        self.svm_classifier = svm.SVC()
+        self.svm_classifier = svm.SVC(**hyp)
         self.predictions=[]
         self.vocabulary=set()
         # add in bigrams?
@@ -227,7 +230,16 @@ class SVMText(Evaluation):
         self.input_features = []
         self.labels = []
 
-        # TODO Q6.
+        for sentiment, review in reviews:
+            label = sentiment
+            self.labels.append(label)
+
+            feature = [0]*len(self.vocabulary)
+            for term in review:
+                if term in self.vocab_to_id:
+                    id = self.vocab_to_id[term]
+                    feature[id] += 1
+            self.input_features.append(feature)
 
     def train(self,reviews):
         """
@@ -237,6 +249,9 @@ class SVMText(Evaluation):
         @param reviews: training data
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
+        self.extractVocabulary(reviews)
+        self.vocab_to_id = self.create_vocab_dict()
+
         # function to determine features in training set.
         self.getFeatures(reviews)
 
@@ -251,5 +266,15 @@ class SVMText(Evaluation):
         @param reviews: test data
         @type reviews: list of (string, list) tuples corresponding to (label, content)
         """
+        self.getFeatures(reviews) # sets self.input_features and self.labels
 
-        # TODO Q6.1
+        predictions = self.svm_classifier.predict(self.input_features)
+        ground_truth = self.labels
+
+        self.predictions = ["+" if pred == truth else "-" for (pred, truth) in zip(predictions, ground_truth)]
+
+    def create_vocab_dict(self):
+        vocab_to_id = {}
+        for word in self.vocabulary:
+            vocab_to_id[word] = len(vocab_to_id)
+        return vocab_to_id
