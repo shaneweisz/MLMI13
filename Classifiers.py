@@ -4,6 +4,11 @@ from nltk.util import ngrams
 from Analysis import Evaluation
 import numpy as np
 from sklearn import svm
+from enum import Enum, auto
+
+class FeatureType(Enum):
+    FREQ = auto()
+    PRES = auto()
 
 class NaiveBayesText(Evaluation):
     def __init__(self,smoothing,bigrams,trigrams,discard_closed_class):
@@ -153,7 +158,7 @@ class NaiveBayesText(Evaluation):
                 self.predictions.append('-')
 
 class SVMText(Evaluation):
-    def __init__(self,bigrams,trigrams,discard_closed_class, hyp={"kernel": "linear"}):
+    def __init__(self,bigrams,trigrams,discard_closed_class, feat_type=FeatureType.FREQ, hyp={"kernel": "linear"}):
         """
         initialisation of SVMText object
 
@@ -184,6 +189,8 @@ class SVMText(Evaluation):
         self.trigrams=trigrams
         # restrict to nouns, adjectives, adverbs and verbs?
         self.discard_closed_class=discard_closed_class
+        # frequency or presence of words for features?
+        self.feat_type = feat_type
 
     def extractVocabulary(self,reviews):
         self.vocabulary = set()
@@ -238,7 +245,10 @@ class SVMText(Evaluation):
             for term in review:
                 if term in self.vocab_to_id:
                     id = self.vocab_to_id[term]
-                    feature[id] += 1
+                    if self.feat_type == FeatureType.PRES:
+                        feature[id] = 1
+                    else:
+                        feature[id] += 1
             self.input_features.append(feature)
 
     def train(self,reviews):
