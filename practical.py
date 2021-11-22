@@ -166,9 +166,45 @@ print(f"Number of features with unigrams, bigrams and trigrams: {num_trigram_fea
 
 # Q6.0
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("FREQ, Linear kernel")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
 SVM.crossValidate(corpus)
 svm_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("PRES, Linear kernel")
+SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"})
+SVM.crossValidate(corpus)
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("FREQ, RBF kernel")
+SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "rbf"})
+SVM.crossValidate(corpus)
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("PRES, RBF kernel")
+SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "rbf"})
+SVM.crossValidate(corpus)
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("FREQ, Linear kernel, normalize")
+SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"}, length_normalize=True)
+SVM.crossValidate(corpus)
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+print("--- classifying reviews using SVM 10-fold cross-eval ---")
+print("PRES, Linear kernel, normalize")
+SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
+SVM.crossValidate(corpus)
 print(f"Accuracy: {SVM.getAccuracy():.2f}")
 print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 
