@@ -6,9 +6,9 @@ import numpy as np
 from sklearn import svm
 from enum import Enum, auto
 
-class FeatureType(Enum):
-    FREQ = auto()
-    PRES = auto()
+class BoWFeatureType(Enum):
+    FREQ = "FREQUENCY"
+    PRES = "PRESENCE"
 
 class NaiveBayesText(Evaluation):
     def __init__(self,smoothing,bigrams,trigrams,discard_closed_class):
@@ -158,7 +158,7 @@ class NaiveBayesText(Evaluation):
                 self.predictions.append('-')
 
 class SVMText(Evaluation):
-    def __init__(self,bigrams,trigrams,discard_closed_class, feat_type=FeatureType.FREQ, hyp={"kernel": "linear"}):
+    def __init__(self,bigrams=False,trigrams=False,discard_closed_class=False, feat_type=BoWFeatureType.FREQ, length_normalize=False, hyp={"kernel": "linear"}):
         """
         initialisation of SVMText object
 
@@ -180,7 +180,7 @@ class SVMText(Evaluation):
         @param hyp: hyperparameters for SVC
         @type hyp: dict[str]
         """
-        self.svm_classifier = svm.SVC(**hyp)
+        self.hyp = hyp
         self.predictions=[]
         self.vocabulary=set()
         # add in bigrams?
@@ -191,6 +191,8 @@ class SVMText(Evaluation):
         self.discard_closed_class=discard_closed_class
         # frequency or presence of words for features?
         self.feat_type = feat_type
+        # length-normalize the features for each document?
+        self.length_normalize = length_normalize
 
     def extractVocabulary(self,reviews):
         self.vocabulary = set()
@@ -245,10 +247,16 @@ class SVMText(Evaluation):
             for term in review:
                 if term in self.vocab_to_id:
                     id = self.vocab_to_id[term]
-                    if self.feat_type == FeatureType.PRES:
+                    if self.feat_type is BoWFeatureType.PRES:
                         feature[id] = 1
-                    else:
+                    elif self.feat_type is BoWFeatureType.FREQ:
                         feature[id] += 1
+                    else:
+                        raise Exception("Invalid feature type")
+            if self.length_normalize:
+                feature_norm = np.linalg.norm(feature)
+                feature = [c/feature_norm for c in feature]
+
             self.input_features.append(feature)
 
     def train(self,reviews):
@@ -266,7 +274,7 @@ class SVMText(Evaluation):
         self.getFeatures(reviews)
 
         # reset SVM classifier and train SVM model
-        self.svm_classifier = svm.SVC()
+        self.svm_classifier = svm.SVC(**self.hyp)
         self.svm_classifier.fit(self.input_features, self.labels)
 
     def test(self,reviews):

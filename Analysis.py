@@ -29,6 +29,7 @@ class Evaluation():
                 if train_fold == test_fold: continue
                 train_files += corpus.folds[train_fold]
             # Train on the 9 train folds, then test on the remaining fold
+            print(f"Fold {test_fold+1}/{num_folds}")
             self.train(train_files)
             self.test(test_files)
 

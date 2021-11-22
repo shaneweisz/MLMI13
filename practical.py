@@ -1,7 +1,7 @@
 from Corpora import MovieReviewCorpus
 from Lexicon import SentimentLexicon
 from Statistics import SignTest
-from Classifiers import NaiveBayesText, SVMText
+from Classifiers import NaiveBayesText, SVMText, BoWFeatureType
 from Extensions import SVMDoc2Vec
 
 # retrieve corpus
@@ -123,22 +123,89 @@ p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams
 significance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only")
 
+# question Q5.0
+# cross-validate model using smoothing and bigrams
+print("--- cross-validating naive bayes using smoothing and bigrams ---")
+NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=False,discard_closed_class=False)
+NB.crossValidate(corpus)
+smoothed_and_bigram_preds=NB.predictions
+print(f"Accuracy: {NB.getAccuracy():.2f}")
+print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+
+# get number of bigram features
+NB.train(corpus.train)
+num_bigram_features = len(NB.vocabulary)
+
+# see if bigrams significantly improves results on smoothed NB only
+p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only")
+# cross-validate model using smoothing and bigrams and trigrams
+print("--- cross-validating naive bayes using smoothing and bigrams and trigrams  ---")
+NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=True,discard_closed_class=False)
+NB.crossValidate(corpus)
+smoothed_and_bigram_and_trigrams_preds=NB.predictions
+print(f"Accuracy: {NB.getAccuracy():.2f}")
+print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+
+# get number of trigram features
+NB.train(corpus.train)
+num_trigram_features = len(NB.vocabulary)
+
+# see if bigrams+trigrams significantly improves results on smoothed NB only
+p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams_preds)
+significance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only")
+
 # Q5.1
 print("--- determining the number of features with/without bigrams ---")
-NB.train(corpus.train)
-
 num_unigram_features = num_non_stemmed_features
 print(f"Number of features with just unigrams smoothing: {num_unigram_features}")
 print(f"Number of features with unigrams and bigrams: {num_bigram_features}")
 print(f"Number of features with unigrams, bigrams and trigrams: {num_trigram_features}")
 
-# TODO Q6 and 6.1
+# Q6.0
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
+SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
+SVM.crossValidate(corpus)
+svm_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 
-# TODO Q7
+# see if SVM significantly improves results on smoothed NB
+p_value=signTest.getSignificance(smoothed_preds,svm_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm are {signifance} with respect to naive bayes with smoothing")
+
+# Q7.0
 print("--- adding in POS information to corpus ---")
+corpus = MovieReviewCorpus(stemming=False, pos=True)
+
 print("--- training svm on word+pos features ----")
+SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
+SVM.crossValidate(corpus)
+svm_pos_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+# see if POS tags significantly changes SVM results
+p_value=signTest.getSignificance(svm_preds, svm_pos_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm+POS are {signifance} with respect to svm")
+
+# Q7.1
 print("--- training svm discarding closed-class words ---")
+corpus = MovieReviewCorpus(stemming=False, pos=True)
+SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"}, discard_closed_class=True)
+SVM.crossValidate(corpus)
+svm_cc_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+# see if discarding closed-class words significantly changes SVM results
+p_value=signTest.getSignificance(svm_preds, svm_cc_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm+discard_closed_class are {signifance} with respect to svm")
 
 # question 8.0
 print("--- using document embeddings ---")
