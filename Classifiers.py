@@ -289,7 +289,7 @@ class SVMText(Evaluation):
         predictions = self.svm_classifier.predict(self.input_features)
         ground_truth = self.labels
 
-        self.predictions = ["+" if pred == truth else "-" for (pred, truth) in zip(predictions, ground_truth)]
+        self.predictions += ["+" if pred == truth else "-" for (pred, truth) in zip(predictions, ground_truth)]
 
     def create_vocab_dict(self):
         vocab_to_id = {}
