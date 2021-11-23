@@ -173,6 +173,11 @@ svm_preds = SVM.predictions
 print(f"Accuracy: {SVM.getAccuracy():.2f}")
 print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 
+# see if SVM significantly improves results on smoothed NB
+p_value=signTest.getSignificance(smoothed_preds,svm_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm (FREQ, linear kernel) are {signifance} with respect to naive bayes with smoothing")
+
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, Linear kernel")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"})
@@ -205,19 +210,20 @@ print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, Linear kernel, normalize")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
 SVM.crossValidate(corpus)
+pres_norm_svm_preds=SVM.predictions
 print(f"Accuracy: {SVM.getAccuracy():.2f}")
 print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 
 # see if SVM significantly improves results on smoothed NB
-p_value=signTest.getSignificance(smoothed_preds,svm_preds)
+p_value=signTest.getSignificance(smoothed_preds,pres_norm_svm_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm are {signifance} with respect to naive bayes with smoothing")
+print(f"results using svm (PRES, linear kernel, normalize) are {signifance} with respect to naive bayes with smoothing")
 
 # Q7.0
 print("--- adding in POS information to corpus ---")
 corpus = MovieReviewCorpus(stemming=False, pos=True)
 
-print("--- training svm on word+pos features ----")
+print("--- training svm on word+pos features  (FREQ, linear kernel) ----")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
 SVM.crossValidate(corpus)
 svm_pos_preds = SVM.predictions
@@ -230,8 +236,7 @@ signifance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using svm+POS are {signifance} with respect to svm")
 
 # Q7.1
-print("--- training svm discarding closed-class words ---")
-corpus = MovieReviewCorpus(stemming=False, pos=True)
+print("--- training svm discarding closed-class words (FREQ, linear kernel) ---")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"}, discard_closed_class=True)
 SVM.crossValidate(corpus)
 svm_cc_preds = SVM.predictions
@@ -240,6 +245,30 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 
 # see if discarding closed-class words significantly changes SVM results
 p_value=signTest.getSignificance(svm_preds, svm_cc_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm+discard_closed_class are {signifance} with respect to svm")
+
+print("--- training svm on word+pos features  (PRES, linear kernel, normalize) ----")
+SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
+SVM.crossValidate(corpus)
+svm_pos_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+# see if POS tags significantly changes SVM results
+p_value=signTest.getSignificance(pres_norm_svm_preds, svm_pos_preds)
+signifance = "significant" if p_value < 0.05 else "not significant"
+print(f"results using svm+POS are {signifance} with respect to svm")
+
+print("--- training svm discarding closed-class words (PRES, linear kernel, normalize) ---")
+SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True, discard_closed_class=True)
+SVM.crossValidate(corpus)
+svm_cc_preds = SVM.predictions
+print(f"Accuracy: {SVM.getAccuracy():.2f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+
+# see if discarding closed-class words significantly changes SVM results
+p_value=signTest.getSignificance(pres_norm_svm_preds, svm_cc_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
 print(f"results using svm+discard_closed_class are {signifance} with respect to svm")
 
