@@ -2,3 +2,6 @@ __pycache__
 mlmi13-venv
 data/reviews/NEG
 data/reviews/POS
+data/large_dataset_reviews*
+data/large_dataset_reviews/**
+.DS_Store
