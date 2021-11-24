@@ -2,6 +2,8 @@ __pycache__
 mlmi13-venv
 data/reviews/NEG
 data/reviews/POS
-data/large_dataset_reviews*
-data/large_dataset_reviews/**
+data/aclImdb*
+data/aclImdb/**
 .DS_Store
+.vscode
+questions.txt
