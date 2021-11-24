@@ -1,9 +1,10 @@
 import os, codecs, sys
 from nltk.stem.porter import PorterStemmer
+from collections import defaultdict
 
 
 class MovieReviewCorpus():
-    def __init__(self,stemming,pos):
+    def __init__(self,stemming,pos,large_dataset=False):
         """
         initialisation of movie review corpus.
 
@@ -19,15 +20,15 @@ class MovieReviewCorpus():
         self.train=[]
         self.test=[]
         # folds for cross-validation
-        self.folds={}
+        self.folds=defaultdict(list)
         # porter stemmer
         self.stemmer=PorterStemmer() if stemming else None
         # part-of-speech tags
         self.pos=pos
         # import movie reviews
-        self.get_reviews()
+        self.get_reviews(large_dataset)
 
-    def get_reviews(self):
+    def get_reviews(self, large_dataset=False):
         """
         processing of movie reviews.
 
@@ -46,6 +47,40 @@ class MovieReviewCorpus():
         3. store reviews in self.folds. self.folds is a dictionary with the format: self.folds[fold_number] where fold_number is an int 0-9.
            you can get the fold number from the review file name.
         """
+        if large_dataset:
+            self.get_large_dataset_reviews()
+        else:
+            self.get_small_dataset_reviews()
+
+
+    def get_large_dataset_reviews(self):
+        doc_count = 0
+        for dataset in ["train", "test"]:
+            for label in ["neg", "pos"]:
+                files = os.listdir(f"data/aclImdb/{dataset}/{label}")
+                for file in files:
+                    text = open(f"data/aclImdb/{dataset}/{label}/{file}").read()
+
+                    text = text.replace('<br />', ' ')
+                    for char in ['.', '"', ',', '(', ')', '!', '?', ';', ':']: # Pad punctuation with spaces on both sides
+                        text = text.replace(char, ' ' + char + ' ')
+
+                    words = text.split()
+                    if self.stemmer:
+                        words = [self.stemmer.stem(word) for word in words]
+
+                    review = (label.upper(), words) # upper() since we want to use NEG and POS as labels
+                    self.reviews.append(review)
+                    if dataset == "train": self.train.append(review)
+                    elif dataset == "test": self.test.append(review)
+
+                    fold_number = doc_count % 10
+                    self.folds[fold_number].append(review)
+
+                    doc_count += 1
+
+
+    def get_small_dataset_reviews(self):
          # Pseudocode:
          # For class in [POS, NEG]:
             # Loop through .tag files
@@ -79,10 +114,7 @@ class MovieReviewCorpus():
 
                 # Add review to appropriate CV fold using Round-Robin cross-validation
                 fold_number = int(file[2:5]) % 10 # i.e. cv013 -> 013 -> 3 (fold 3)
-                if fold_number not in self.folds:
-                    self.folds[fold_number] = [review]
-                else:
-                    self.folds[fold_number].append(review)
+                self.folds[fold_number].append(review)
 
     def extract_review(self, file, sentiment):
         tokens = []
