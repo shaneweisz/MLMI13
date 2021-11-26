@@ -28,7 +28,7 @@ def get_documents_for_doc2vec():
                 i += 1
     return documents
 
-vector_sizes = [50, 100, 200, 400]
+vector_sizes = [25, 50, 100, 200, 400]
 
 base_kwargs = dict(
     epochs=20,
