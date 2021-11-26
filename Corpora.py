@@ -61,6 +61,7 @@ class MovieReviewCorpus():
                 for file in files:
                     text = open(f"data/aclImdb/{dataset}/{label}/{file}").read()
 
+                    text = text.lower()
                     text = text.replace('<br />', ' ')
                     for char in ['.', '"', ',', '(', ')', '!', '?', ';', ':']: # Pad punctuation with spaces on both sides
                         text = text.replace(char, ' ' + char + ' ')
