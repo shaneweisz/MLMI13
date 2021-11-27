@@ -28,16 +28,17 @@ def get_documents_for_doc2vec():
                 i += 1
     return documents
 
-vector_sizes = [25, 50, 100, 200, 400]
+vector_sizes = [10, 25, 50, 100, 200, 400, 800]
 
 base_kwargs = dict(
     epochs=20,
     min_count=1,
     sample=1e-4,
     window=10,
-    workers=8,
     negative=5,
-    hs=0
+    hs=0,
+    seed=0, # for reproducibility
+    workers=1, # for reproducibility
 )
 
 def main():
@@ -55,23 +56,23 @@ def main():
         print(f"Training doc2vec models with document vector embeddings of length {v}")
 
         print("Training DBOW")
-        model_dbow = Doc2Vec(documents, dm = 0, vector_size=v, **base_kwargs) # DBOW
-        pickle.dump(model_dbow, open(f"./models_d2v/dbow_{v}.p", "wb"))
+        model_dbow = Doc2Vec(documents, dm = 0, vector_size=v, **base_kwargs)
+        pickle.dump(model_dbow, open(f"./models_d2v/dbow_{v:03d}.p", "wb"))
 
         print("Training DM")
-        model_dm = Doc2Vec(documents, dm = 1, vector_size=v, **base_kwargs) # DM
-        pickle.dump(model_dm, open(f"./models_d2v/dm_{v}.p", "wb"))
+        model_dm = Doc2Vec(documents, dm = 1, vector_size=v, **base_kwargs)
+        pickle.dump(model_dm, open(f"./models_d2v/dm_{v:03d}.p", "wb"))
 
         print("Training DM Concat")
-        model_dm_concat = Doc2Vec(documents, dm = 0, vector_size=v, **base_kwargs) # DM-concat
-        pickle.dump(model_dm_concat, open(f"./models_d2v/dm_c_{v}.p", "wb"))
+        model_dm_concat = Doc2Vec(documents, dm = 1, dm_concat=1, vector_size=v, **base_kwargs)
+        pickle.dump(model_dm_concat, open(f"./models_d2v/dm_c_{v:03d}.p", "wb"))
 
         print("Training DBOW + DM")
         combined_model1 = ConcatenatedDoc2Vec([model_dbow, model_dm])
-        pickle.dump(combined_model1, open(f"./models_d2v/dbow_dm_{v}.p", "wb"))
+        pickle.dump(combined_model1, open(f"./models_d2v/concat_dbow_dm_{v:03d}.p", "wb"))
 
         print("Training DBOW + DM Concat")
         combined_model2 = ConcatenatedDoc2Vec([model_dbow, model_dm_concat])
-        pickle.dump(combined_model2, open(f"./models_d2v/dbow_dm_c_{v}.p", "wb"))
+        pickle.dump(combined_model2, open(f"./models_d2v/concat_dbow_dm_c_{v:03d}.p", "wb"))
 
 main()
