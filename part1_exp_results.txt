@@ -1,243 +1,99 @@
 --- classifying reviews using sentiment lexicon  ---
 token-only results: 0.68
 magnitude results:0.69
-magnitude lexicon results are not significant with respect to token-only
+magnitude lexicon results are not significant with respect to token-only (p = 0.687)
 --- classifying reviews using Naive Bayes on held-out test set ---
 Accuracy without smoothing: 0.52
 Accuracy using smoothing: 0.82
-results using smoothing are significant with respect to no smoothing
+results using smoothing are significant with respect to no smoothing (p = 0.000)
 --- classifying reviews using 10-fold cross-evaluation ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.810
 Std. Dev: 0.021
 --- stemming corpus ---
 --- cross-validating NB using stemming ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.814
 Std. Dev: 0.026
-results using stemming are not significant with respect to smoothed NB with no stemming
+results using stemming are not significant with respect to smoothed NB with no stemming (p = 0.893)
 --- determining the number of features before/after stemming ---
 Number of features without stemming: 52555
 Number of features with stemming: 32404
 --- cross-validating naive bayes using smoothing and bigrams ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.83
 Std. Dev: 0.03
-results using smoothing and bigrams are not significant with respect to smoothing only
+results using smoothing and bigrams are not significant with respect to smoothing only (p = 0.434)
 --- cross-validating naive bayes using smoothing and bigrams and trigrams  ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.83
 Std. Dev: 0.02
-results using smoothing and bigrams and trigrams are not significant with respect to smoothing only
+results using smoothing and bigrams and trigrams are not significant with respect to smoothing only (p = 0.371)
 --- cross-validating naive bayes using smoothing and bigrams ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.83
 Std. Dev: 0.03
-results using smoothing and bigrams are not significant with respect to smoothing only
+results using smoothing and bigrams are not significant with respect to smoothing only (p = 0.434)
 --- cross-validating naive bayes using smoothing and bigrams and trigrams  ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.83
 Std. Dev: 0.02
-results using smoothing and bigrams and trigrams are not significant with respect to smoothing only
+results using smoothing and bigrams and trigrams are not significant with respect to smoothing only (p = 0.371)
 --- determining the number of features with/without bigrams ---
 Number of features with just unigrams smoothing: 52555
 Number of features with unigrams and bigrams: 500086
 Number of features with unigrams, bigrams and trigrams: 1462605
 --- classifying reviews using SVM 10-fold cross-eval ---
 FREQ, Linear kernel
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.84
 Std. Dev: 0.02
-results using svm (FREQ, linear kernel) are not significant with respect to naive bayes with smoothing
+results using svm (FREQ, linear kernel) are not significant with respect to naive bayes with smoothing (p = 0.245)
 --- classifying reviews using SVM 10-fold cross-eval ---
 PRES, Linear kernel
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.85
 Std. Dev: 0.02
 --- classifying reviews using SVM 10-fold cross-eval ---
 FREQ, RBF kernel
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.74
 Std. Dev: 0.03
 --- classifying reviews using SVM 10-fold cross-eval ---
 PRES, RBF kernel
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.86
 Std. Dev: 0.03
 --- classifying reviews using SVM 10-fold cross-eval ---
 FREQ, Linear kernel, normalize
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.76
 Std. Dev: 0.02
 --- classifying reviews using SVM 10-fold cross-eval ---
 PRES, Linear kernel, normalize
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.86
 Std. Dev: 0.03
-results using svm (PRES, linear kernel, normalize) are significant with respect to naive bayes with smoothing
+results using svm (PRES, linear kernel, normalize) are significant with respect to naive bayes with smoothing (p = 0.016)
 --- adding in POS information to corpus ---
 --- training svm on word+pos features  (FREQ, linear kernel) ----
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.84
 Std. Dev: 0.02
-results using svm+POS are not significant with respect to svm
+results using svm+POS are not significant with respect to svm (p = 0.982)
 --- training svm discarding closed-class words (FREQ, linear kernel) ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.84
 Std. Dev: 0.02
-results using svm+discard_closed_class are not significant with respect to svm
+results using svm+discard_closed_class are not significant with respect to svm (p = 0.893)
 --- training svm on word+pos features  (PRES, linear kernel, normalize) ----
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.87
 Std. Dev: 0.02
-results using svm+POS are not significant with respect to svm
+results using svm+POS are not significant with respect to svm (p = 0.929)
 --- training svm discarding closed-class words (PRES, linear kernel, normalize) ---
-Fold 1/10
-Fold 2/10
-Fold 3/10
-Fold 4/10
-Fold 5/10
-Fold 6/10
-Fold 7/10
-Fold 8/10
-Fold 9/10
-Fold 10/10
+Fold 1 2 3 4 5 6 7 8 9 10 
 Accuracy: 0.87
 Std. Dev: 0.02
-results using svm+discard_closed_class are not significant with respect to svm
+results using svm+discard_closed_class are not significant with respect to svm (p = 0.964)
 --- using document embeddings ---

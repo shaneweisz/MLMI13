@@ -32,7 +32,7 @@ print(f"magnitude results:{lexicon.getAccuracy():.2f}")
 # question 0.2
 p_value=signTest.getSignificance(token_preds,magnitude_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
-print(f"magnitude lexicon results are {significance} with respect to token-only")
+print(f"magnitude lexicon results are {significance} with respect to token-only (p = {p_value:.3f})")
 
 
 # question 1.0
@@ -59,7 +59,7 @@ print(f"Accuracy using smoothing: {NB.getAccuracy():.2f}")
 # see if smoothing significantly improves results
 p_value=signTest.getSignificance(non_smoothed_preds,smoothed_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using smoothing are {significance} with respect to no smoothing")
+print(f"results using smoothing are {significance} with respect to no smoothing (p = {p_value:.3f})")
 
 # question 3.0
 print("--- classifying reviews using 10-fold cross-evaluation ---")
@@ -85,7 +85,7 @@ print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 # see if stemming significantly improves results on smoothed NB
 p_value=signTest.getSignificance(smoothed_preds, stemmed_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using stemming are {significance} with respect to smoothed NB with no stemming")
+print(f"results using stemming are {significance} with respect to smoothed NB with no stemming (p = {p_value:.3f})")
 
 # Q4.2
 print("--- determining the number of features before/after stemming ---")
@@ -107,7 +107,7 @@ num_bigram_features = len(NB.vocabulary)
 # see if bigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only")
+print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only (p = {p_value:.3f})")
 
 # cross-validate model using smoothing and bigrams and trigrams
 print("--- cross-validating naive bayes using smoothing and bigrams and trigrams  ---")
@@ -121,7 +121,7 @@ num_trigram_features = len(NB.vocabulary)
 # see if bigrams+trigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only")
+print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only (p = {p_value:.3f})")
 
 # question Q5.0
 # cross-validate model using smoothing and bigrams
@@ -139,7 +139,7 @@ num_bigram_features = len(NB.vocabulary)
 # see if bigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only")
+print(f"results using smoothing and bigrams are {signifance} with respect to smoothing only (p = {p_value:.3f})")
 # cross-validate model using smoothing and bigrams and trigrams
 print("--- cross-validating naive bayes using smoothing and bigrams and trigrams  ---")
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=True,discard_closed_class=False)
@@ -155,7 +155,7 @@ num_trigram_features = len(NB.vocabulary)
 # see if bigrams+trigrams significantly improves results on smoothed NB only
 p_value=signTest.getSignificance(smoothed_preds,smoothed_and_bigram_and_trigrams_preds)
 significance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only")
+print(f"results using smoothing and bigrams and trigrams are {significance} with respect to smoothing only (p = {p_value:.3f})")
 
 # Q5.1
 print("--- determining the number of features with/without bigrams ---")
@@ -176,7 +176,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if SVM significantly improves results on smoothed NB
 p_value=signTest.getSignificance(smoothed_preds,svm_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm (FREQ, linear kernel) are {signifance} with respect to naive bayes with smoothing")
+print(f"results using svm (FREQ, linear kernel) are {signifance} with respect to naive bayes with smoothing (p = {p_value:.3f})")
 
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, Linear kernel")
@@ -217,7 +217,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if SVM significantly improves results on smoothed NB
 p_value=signTest.getSignificance(smoothed_preds,pres_norm_svm_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm (PRES, linear kernel, normalize) are {signifance} with respect to naive bayes with smoothing")
+print(f"results using svm (PRES, linear kernel, normalize) are {signifance} with respect to naive bayes with smoothing (p = {p_value:.3f})")
 
 # Q7.0
 print("--- adding in POS information to corpus ---")
@@ -233,7 +233,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if POS tags significantly changes SVM results
 p_value=signTest.getSignificance(svm_preds, svm_pos_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm+POS are {signifance} with respect to svm")
+print(f"results using svm+POS are {signifance} with respect to svm (p = {p_value:.3f})")
 
 # Q7.1
 print("--- training svm discarding closed-class words (FREQ, linear kernel) ---")
@@ -246,7 +246,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if discarding closed-class words significantly changes SVM results
 p_value=signTest.getSignificance(svm_preds, svm_cc_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm+discard_closed_class are {signifance} with respect to svm")
+print(f"results using svm+discard_closed_class are {signifance} with respect to svm (p = {p_value:.3f})")
 
 print("--- training svm on word+pos features  (PRES, linear kernel, normalize) ----")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
@@ -258,7 +258,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if POS tags significantly changes SVM results
 p_value=signTest.getSignificance(pres_norm_svm_preds, svm_pos_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm+POS are {signifance} with respect to svm")
+print(f"results using svm+POS are {signifance} with respect to svm (p = {p_value:.3f})")
 
 print("--- training svm discarding closed-class words (PRES, linear kernel, normalize) ---")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True, discard_closed_class=True)
@@ -270,7 +270,7 @@ print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
 # see if discarding closed-class words significantly changes SVM results
 p_value=signTest.getSignificance(pres_norm_svm_preds, svm_cc_preds)
 signifance = "significant" if p_value < 0.05 else "not significant"
-print(f"results using svm+discard_closed_class are {signifance} with respect to svm")
+print(f"results using svm+discard_closed_class are {signifance} with respect to svm (p = {p_value:.3f})")
 
 # question 8.0
 print("--- using document embeddings ---")
