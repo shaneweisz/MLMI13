@@ -7,3 +7,4 @@ data/aclImdb/**
 .DS_Store
 .vscode
 questions.txt
+models_d2v

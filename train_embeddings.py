@@ -2,7 +2,6 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.test.test_doc2vec import ConcatenatedDoc2Vec
 import os
 import random
-from gensim.test.utils import get_tmpfile
 import pickle
 import numpy as np
 
@@ -28,7 +27,7 @@ def get_documents_for_doc2vec():
                 i += 1
     return documents
 
-vector_sizes = [10, 25, 50, 100, 200, 400, 800]
+vector_sizes = [1, 2, 5, 10, 25, 50, 100, 200, 400, 800]
 
 base_kwargs = dict(
     epochs=20,
@@ -63,16 +62,8 @@ def main():
         model_dm = Doc2Vec(documents, dm = 1, vector_size=v, **base_kwargs)
         pickle.dump(model_dm, open(f"./models_d2v/dm_{v:03d}.p", "wb"))
 
-        print("Training DM Concat")
-        model_dm_concat = Doc2Vec(documents, dm = 1, dm_concat=1, vector_size=v, **base_kwargs)
-        pickle.dump(model_dm_concat, open(f"./models_d2v/dm_c_{v:03d}.p", "wb"))
-
         print("Training DBOW + DM")
         combined_model1 = ConcatenatedDoc2Vec([model_dbow, model_dm])
         pickle.dump(combined_model1, open(f"./models_d2v/concat_dbow_dm_{v:03d}.p", "wb"))
-
-        print("Training DBOW + DM Concat")
-        combined_model2 = ConcatenatedDoc2Vec([model_dbow, model_dm_concat])
-        pickle.dump(combined_model2, open(f"./models_d2v/concat_dbow_dm_c_{v:03d}.p", "wb"))
 
 main()
