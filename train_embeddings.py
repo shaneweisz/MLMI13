@@ -27,7 +27,7 @@ def get_documents_for_doc2vec():
                 i += 1
     return documents
 
-vector_sizes = [1, 2, 5, 10, 25, 50, 100, 200, 400, 800]
+vector_sizes = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
 
 base_kwargs = dict(
     epochs=20,
@@ -54,16 +54,16 @@ def main():
     for v in vector_sizes:
         print(f"Training doc2vec models with document vector embeddings of length {v}")
 
-        print("Training DBOW")
-        model_dbow = Doc2Vec(documents, dm = 0, vector_size=v, **base_kwargs)
-        pickle.dump(model_dbow, open(f"./models_d2v/dbow_{v:03d}.p", "wb"))
-
         print("Training DM")
         model_dm = Doc2Vec(documents, dm = 1, vector_size=v, **base_kwargs)
         pickle.dump(model_dm, open(f"./models_d2v/dm_{v:03d}.p", "wb"))
 
-        print("Training DBOW + DM")
-        combined_model1 = ConcatenatedDoc2Vec([model_dbow, model_dm])
-        pickle.dump(combined_model1, open(f"./models_d2v/concat_dbow_dm_{v:03d}.p", "wb"))
+        print("Training DBOW")
+        model_dbow = Doc2Vec(documents, dm = 0, vector_size=v, **base_kwargs)
+        pickle.dump(model_dbow, open(f"./models_d2v/dbow_{v:03d}.p", "wb"))
+
+        print("Training DM + DBOW")
+        model_concat_dm_dbow = ConcatenatedDoc2Vec([model_dm, model_dbow])
+        pickle.dump(model_concat_dm_dbow, open(f"./models_d2v/concat_dm_dbow_{v:03d}.p", "wb"))
 
 main()
