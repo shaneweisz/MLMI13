@@ -4,7 +4,7 @@ from collections import defaultdict
 
 
 class MovieReviewCorpus():
-    def __init__(self,stemming,pos,large_dataset=False):
+    def __init__(self,stemming,pos,to_lower=False,large_dataset=False):
         """
         initialisation of movie review corpus.
 
@@ -23,6 +23,7 @@ class MovieReviewCorpus():
         self.folds=defaultdict(list)
         # porter stemmer
         self.stemmer=PorterStemmer() if stemming else None
+        self.to_lower = to_lower
         # part-of-speech tags
         self.pos=pos
         # import movie reviews
@@ -129,6 +130,9 @@ class MovieReviewCorpus():
                 raise Exception("Encountered a line that's not a word and pos tag pair")
 
             word, pos_tag = line.split('\t')
+
+            if self.to_lower:
+                word = word.lower()
 
             if self.stemmer:
                 word = self.stemmer.stem(word)

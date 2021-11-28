@@ -31,7 +31,7 @@ class SVMDoc2Vec(SVMText):
 
         @return: normalised vector
         """
-        return 2 * (vector - np.min(vector)/(np.max(np.vectorize) - np.min(vector))) - 1
+        return 2 * (vector - np.min(vector)/(np.max(vector) - np.min(vector))) - 1
 
 
     # since using pre-trained vectors don't need to determine features
@@ -50,4 +50,5 @@ class SVMDoc2Vec(SVMText):
             label = sentiment
             self.labels.append(label)
             embedding = self.model.infer_vector(review)
+            # embedding = self.normalize(embedding)
             self.input_features.append(embedding)
