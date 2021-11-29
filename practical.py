@@ -23,11 +23,11 @@ threshold=8
 # question 0.1
 lexicon.classify(corpus.reviews,threshold,magnitude=False)
 token_preds=lexicon.predictions
-print(f"token-only results: {lexicon.getAccuracy():.2f}")
+print(f"token-only results: {lexicon.getAccuracy():.3f}")
 
 lexicon.classify(corpus.reviews,threshold,magnitude=True)
 magnitude_preds=lexicon.predictions
-print(f"magnitude results:{lexicon.getAccuracy():.2f}")
+print(f"magnitude results:{lexicon.getAccuracy():.3f}")
 
 # question 0.2
 p_value=signTest.getSignificance(token_preds,magnitude_preds)
@@ -42,7 +42,7 @@ NB.train(corpus.train)
 NB.test(corpus.test)
 # store predictions from classifier
 non_smoothed_preds=NB.predictions
-print(f"Accuracy without smoothing: {NB.getAccuracy():.2f}")
+print(f"Accuracy without smoothing: {NB.getAccuracy():.3f}")
 
 # question 2.0
 # use smoothing
@@ -52,7 +52,7 @@ NB.test(corpus.test)
 smoothed_preds=NB.predictions
 # saving this for use later
 num_non_stemmed_features=len(NB.vocabulary)
-print(f"Accuracy using smoothing: {NB.getAccuracy():.2f}")
+print(f"Accuracy using smoothing: {NB.getAccuracy():.3f}")
 
 
 # question 2.1
@@ -100,8 +100,8 @@ print("--- cross-validating naive bayes using smoothing and bigrams ---")
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=False,discard_closed_class=False)
 NB.crossValidate(corpus)
 smoothed_and_bigram_preds=NB.predictions
-print(f"Accuracy: {NB.getAccuracy():.2f}")
-print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+print(f"Accuracy: {NB.getAccuracy():.3f}")
+print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 num_bigram_features = len(NB.vocabulary)
 
 # see if bigrams significantly improves results on smoothed NB only
@@ -114,8 +114,8 @@ print("--- cross-validating naive bayes using smoothing and bigrams and trigrams
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=True,discard_closed_class=False)
 NB.crossValidate(corpus)
 smoothed_and_bigram_and_trigrams_preds=NB.predictions
-print(f"Accuracy: {NB.getAccuracy():.2f}")
-print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+print(f"Accuracy: {NB.getAccuracy():.3f}")
+print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 num_trigram_features = len(NB.vocabulary)
 
 # see if bigrams+trigrams significantly improves results on smoothed NB only
@@ -129,8 +129,8 @@ print("--- cross-validating naive bayes using smoothing and bigrams ---")
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=False,discard_closed_class=False)
 NB.crossValidate(corpus)
 smoothed_and_bigram_preds=NB.predictions
-print(f"Accuracy: {NB.getAccuracy():.2f}")
-print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+print(f"Accuracy: {NB.getAccuracy():.3f}")
+print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 
 # get number of bigram features
 NB.train(corpus.train)
@@ -145,8 +145,8 @@ print("--- cross-validating naive bayes using smoothing and bigrams and trigrams
 NB=NaiveBayesText(smoothing=True,bigrams=True,trigrams=True,discard_closed_class=False)
 NB.crossValidate(corpus)
 smoothed_and_bigram_and_trigrams_preds=NB.predictions
-print(f"Accuracy: {NB.getAccuracy():.2f}")
-print(f"Std. Dev: {NB.getStdDeviation():.2f}")
+print(f"Accuracy: {NB.getAccuracy():.3f}")
+print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 
 # get number of trigram features
 NB.train(corpus.train)
@@ -170,8 +170,8 @@ print("FREQ, Linear kernel")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
 SVM.crossValidate(corpus)
 svm_preds = SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if SVM significantly improves results on smoothed NB
 p_value=signTest.getSignificance(smoothed_preds,svm_preds)
@@ -182,37 +182,37 @@ print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, Linear kernel")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"})
 SVM.crossValidate(corpus)
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("FREQ, RBF kernel")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "rbf"})
 SVM.crossValidate(corpus)
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, RBF kernel")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "rbf"})
 SVM.crossValidate(corpus)
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("FREQ, Linear kernel, normalize")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"}, length_normalize=True)
 SVM.crossValidate(corpus)
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 print("--- classifying reviews using SVM 10-fold cross-eval ---")
 print("PRES, Linear kernel, normalize")
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
 SVM.crossValidate(corpus)
 pres_norm_svm_preds=SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if SVM significantly improves results on smoothed NB
 p_value=signTest.getSignificance(smoothed_preds,pres_norm_svm_preds)
@@ -227,8 +227,8 @@ print("--- training svm on word+pos features  (FREQ, linear kernel) ----")
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"})
 SVM.crossValidate(corpus)
 svm_pos_preds = SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if POS tags significantly changes SVM results
 p_value=signTest.getSignificance(svm_preds, svm_pos_preds)
@@ -240,8 +240,8 @@ print("--- training svm discarding closed-class words (FREQ, linear kernel) ---"
 SVM = SVMText(feat_type=BoWFeatureType.FREQ, hyp={"kernel": "linear"}, discard_closed_class=True)
 SVM.crossValidate(corpus)
 svm_cc_preds = SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if discarding closed-class words significantly changes SVM results
 p_value=signTest.getSignificance(svm_preds, svm_cc_preds)
@@ -252,8 +252,8 @@ print("--- training svm on word+pos features  (PRES, linear kernel, normalize) -
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True)
 SVM.crossValidate(corpus)
 svm_pos_preds = SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if POS tags significantly changes SVM results
 p_value=signTest.getSignificance(pres_norm_svm_preds, svm_pos_preds)
@@ -264,8 +264,8 @@ print("--- training svm discarding closed-class words (PRES, linear kernel, norm
 SVM = SVMText(feat_type=BoWFeatureType.PRES, hyp={"kernel": "linear"}, length_normalize=True, discard_closed_class=True)
 SVM.crossValidate(corpus)
 svm_cc_preds = SVM.predictions
-print(f"Accuracy: {SVM.getAccuracy():.2f}")
-print(f"Std. Dev: {SVM.getStdDeviation():.2f}")
+print(f"Accuracy: {SVM.getAccuracy():.3f}")
+print(f"Std. Dev: {SVM.getStdDeviation():.3f}")
 
 # see if discarding closed-class words significantly changes SVM results
 p_value=signTest.getSignificance(pres_norm_svm_preds, svm_cc_preds)
