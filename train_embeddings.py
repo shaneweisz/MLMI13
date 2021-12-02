@@ -66,4 +66,8 @@ def main():
         model_concat_dm_dbow = ConcatenatedDoc2Vec([model_dm, model_dbow])
         pickle.dump(model_concat_dm_dbow, open(f"./models_d2v/concat_dm_dbow_{v:03d}.p", "wb"))
 
+        print("Training DBOW with word vectors")
+        model_w_dbow = Doc2Vec(documents, dm = 0, dbow_words=1, vector_size=v, **base_kwargs)
+        pickle.dump(model_w_dbow, open(f"./models_d2v/w_dbow_{v:03d}.p", "wb"))
+
 main()
