@@ -20,7 +20,7 @@ print(f"Std. Dev: {NB.getStdDeviation():.3f}")
 # svm doc2vec
 print("Cross-validating SVM-Doc2Vec:")
 corpus=MovieReviewCorpus(stemming=False,pos=False,to_lower=True)
-doc2vec_model = pickle.load(open(f"models_d2v/dbow_064.p","rb"))
+doc2vec_model = pickle.load(open(f"models_d2v/w_dbow_064.p","rb"))
 SVM = SVMDoc2Vec(doc2vec_model)
 SVM.crossValidate(corpus)
 svm_doc2vec_preds=SVM.predictions
