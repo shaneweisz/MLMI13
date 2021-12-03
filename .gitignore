@@ -8,3 +8,4 @@ data/aclImdb/**
 .vscode
 questions.txt
 models_d2v
+.venv
